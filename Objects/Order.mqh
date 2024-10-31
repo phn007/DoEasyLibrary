@@ -14,7 +14,10 @@
 class COrder : public CObject
 {
    private:
-
+      ulong    m_ticket;                                 // Selected order/deal ticket (MQL5)
+      long     m_long_prop[ORDER_PROP_INTEGER_TOTAL];    // Integer properties
+      double   m_double_prop[ORDER_PROP_DOUBLE_TOTAL];   // Real properties
+      string   m_string_prop[ORDER_PROP_STRING_TOTAL];   // String properties
    public:
       COrder();
      ~COrder();
