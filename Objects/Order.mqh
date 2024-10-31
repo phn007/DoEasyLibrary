@@ -70,6 +70,20 @@ class COrder : public CObject
       string   OrderSymbol(void)             const;
       string   OrderComment(void)            const;
       string   OrderExternalID(void)         const; 
+      
+      public:
+      //--- Return (1) integer, (2) real and (3) string order properties from the property array
+      long     GetProperty(ENUM_ORDER_PROP_INTEGER property)   const { return m_long_prop[property];                    }
+      double   GetProperty(ENUM_ORDER_PROP_DOUBLE property)    const { return m_double_prop[this.IndexProp(property)];  }
+      string   GetProperty(ENUM_ORDER_PROP_STRING property)    const { return m_string_prop[this.IndexProp(property)];  }
+      
+      //--- Return the flag of the order supporting the property
+      virtual bool   SupportProperty(ENUM_ORDER_PROP_INTEGER property)  { return true; }
+      virtual bool   SupportProperty(ENUM_ORDER_PROP_DOUBLE property)   { return true; }
+      virtual bool   SupportProperty(ENUM_ORDER_PROP_STRING property)   { return true; }
+      
+      //--- Compare COrder objects by all possible properties
+      virtual int Compare(const CObject *node,const int mode=0) const;
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
