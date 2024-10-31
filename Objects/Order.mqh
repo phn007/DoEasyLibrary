@@ -18,9 +18,16 @@ class COrder : public CObject
       long     m_long_prop[ORDER_PROP_INTEGER_TOTAL];    // Integer properties
       double   m_double_prop[ORDER_PROP_DOUBLE_TOTAL];   // Real properties
       string   m_string_prop[ORDER_PROP_STRING_TOTAL];   // String properties
+      //--- Return the array index the double property is actually located at
+      int   IndexProp(ENUM_ORDER_PROP_DOUBLE property)   const { return (int)property-ORDER_PROP_INTEGER_TOTAL;                  }
+      //--- Return the array index the string property is actually located at
+      int   IndexProp(ENUM_ORDER_PROP_STRING property)   const { return (int)property-ORDER_PROP_INTEGER_TOTAL-ORDER_PROP_DOUBLE_TOTAL;}
    public:
       COrder();
-     ~COrder();
+     ~COrder();  
+   protected:                                                                     
+      //--- Protected parametric constructor                                
+      COrder(ENUM_ORDER_STATUS order_status,const ulong ticket);     
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
