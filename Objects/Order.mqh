@@ -19,7 +19,7 @@ class COrder : public CObject
       double   m_double_prop[ORDER_PROP_DOUBLE_TOTAL];   // Real properties
       string   m_string_prop[ORDER_PROP_STRING_TOTAL];   // String properties
       //--- Return the array index the double property is actually located at
-      int   IndexProp(ENUM_ORDER_PROP_DOUBLE property)   const { return (int)property-ORDER_PROP_INTEGER_TOTAL;                  }
+      int   IndexProp(ENUM_ORDER_PROP_DOUBLE property)   const { return (int)property-ORDER_PROP_INTEGER_TOTAL;}
       //--- Return the array index the string property is actually located at
       int   IndexProp(ENUM_ORDER_PROP_STRING property)   const { return (int)property-ORDER_PROP_INTEGER_TOTAL-ORDER_PROP_DOUBLE_TOTAL;}
    public:
@@ -97,4 +97,34 @@ COrder::COrder()
 COrder::~COrder()
 {
 }
+//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| Compare COrder objects by all possible properties                |
+//+------------------------------------------------------------------+
+int COrder::Compare(const CObject *node,const int mode=0) const
+  {
+   const COrder *order_compared = node;
+//--- compare integer properties of two orders
+   if(mode<ORDER_PROP_INTEGER_TOTAL)
+ 	{
+      long value_compared = order_compared.GetProperty((ENUM_ORDER_PROP_INTEGER)mode);
+      long value_current  = this.GetProperty((ENUM_ORDER_PROP_INTEGER)mode);
+      return(value_current>value_compared ? 1 : value_current<value_compared ? -1 : 0);
+ 	}
+//--- compare real properties of two orders
+   else if(mode<ORDER_PROP_DOUBLE_TOTAL+ORDER_PROP_INTEGER_TOTAL)
+ 	{
+      double value_compared = order_compared.GetProperty((ENUM_ORDER_PROP_DOUBLE)mode);
+      double value_current  = this.GetProperty((ENUM_ORDER_PROP_DOUBLE)mode);
+      return(value_current>value_compared ? 1 : value_current<value_compared ? -1 : 0);
+ 	}
+//--- compare string properties of two orders
+   else if(mode<ORDER_PROP_DOUBLE_TOTAL+ORDER_PROP_INTEGER_TOTAL+ORDER_PROP_STRING_TOTAL)
+ 	{
+      string value_compared=order_compared.GetProperty((ENUM_ORDER_PROP_STRING)mode);
+      string value_current=this.GetProperty((ENUM_ORDER_PROP_STRING)mode);
+      return(value_current>value_compared ? 1 : value_current<value_compared ? -1 : 0);
+ 	}
+   return 0;
+  }
 //+------------------------------------------------------------------+
