@@ -128,3 +128,24 @@ int COrder::Compare(const CObject *node,const int mode=0) const
    return 0;
   }
 //+------------------------------------------------------------------+
+//| Return magic number                                              |
+//+------------------------------------------------------------------+
+long COrder::OrderMagicNumber() const
+  {
+#ifdef __MQL4__
+   return ::OrderMagicNumber();
+#else
+   long res=0;
+   switch((ENUM_ORDER_STATUS)this.GetProperty(ORDER_PROP_STATUS))
+     {
+      case ORDER_STATUS_MARKET_ACTIVE     : res=::PositionGetInteger(POSITION_MAGIC);           break;
+      case ORDER_STATUS_MARKET_PENDING    : res=::OrderGetInteger(ORDER_MAGIC);                 break;
+      case ORDER_STATUS_DEAL              : res=::HistoryDealGetInteger(m_ticket,DEAL_MAGIC);   break;
+      case ORDER_STATUS_HISTORY_PENDING   :
+      case ORDER_STATUS_HISTORY_ORDER     : res=::HistoryOrderGetInteger(m_ticket,ORDER_MAGIC); break;
+      default                             : res=0;                                              break;
+     }
+   return res;
+#endif
+  }
+//+------------------------------------------------------------------+
